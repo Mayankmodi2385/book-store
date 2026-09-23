@@ -85,45 +85,15 @@ function App() {
       <h2>{editingId ? "Edit Book" : "Add Book"}</h2>
 
       <form onSubmit={handleSubmit}>
-        <input
-          name="title"
-          placeholder="Title"
-          value={form.title}
-          onChange={handleChange}
-          required
-        />
+        <input name="title" placeholder="Title" value={form.title} onChange={handleChange} required />
 
-        <input
-          name="author"
-          placeholder="Author"
-          value={form.author}
-          onChange={handleChange}
-          required
-        />
+        <input name="author" placeholder="Author" value={form.author} onChange={handleChange} required />
 
-        <input
-          name="price"
-          type="number"
-          placeholder="Price"
-          value={form.price}
-          onChange={handleChange}
-          required
-        />
+        <input name="price" type="number" placeholder="Price" value={form.price} onChange={handleChange} required />
 
-        <input
-          name="category"
-          placeholder="Category"
-          value={form.category}
-          onChange={handleChange}
-          required
-        />
+        <input name="category" placeholder="Category" value={form.category} onChange={handleChange} required />
 
-        <textarea
-          name="description"
-          placeholder="Description"
-          value={form.description}
-          onChange={handleChange}
-        />
+        <textarea name="description" placeholder="Description" value={form.description} onChange={handleChange} />
 
         <button type="submit">
           {editingId ? "Update Book" : "Add Book"}
@@ -161,13 +131,9 @@ function App() {
           <p>Category: {book.category}</p>
           <p>{book.description}</p>
 
-          <button onClick={() => handleEdit(book)}>
-            Edit
-          </button>
+          <button onClick={() => handleEdit(book)}>Edit</button>
 
-          <button onClick={() => handleDelete(book._id)}>
-            Delete
-          </button>
+          <button onClick={() => handleDelete(book._id)}>Delete</button>
 
           <hr />
         </div>
