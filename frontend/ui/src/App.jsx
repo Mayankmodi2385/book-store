@@ -6,8 +6,12 @@ import {
   useDeleteBookMutation
 } from "./services/booksApi";
 
+import BookForm from "./Components/bookForm";
+import BookList from "./Components/bookList";
+
 function App() {
   const { data: books, isLoading } = useGetBooksQuery();
+
   const [createBook] = useCreateBookMutation();
   const [updateBook] = useUpdateBookMutation();
   const [deleteBook] = useDeleteBookMutation();
@@ -73,70 +77,39 @@ function App() {
     await deleteBook(id);
   };
 
+  const handleCancel = () => {
+    setEditingId(null);
+
+    setForm({
+      title: "",
+      author: "",
+      price: "",
+      category: "",
+      description: ""
+    });
+  };
+
   if (isLoading) {
     return <h2>Loading books...</h2>;
   }
 
   return (
-    <div>
+    <div className="app">
       <h1>Book Store</h1>
 
-      <h2>{editingId ? "Edit Book" : "Add Book"}</h2>
+      <BookForm
+        form={form}
+        editingId={editingId}
+        onChange={handleChange}
+        onSubmit={handleSubmit}
+        onCancel={handleCancel}
+      />
 
-      <form onSubmit={handleSubmit}>
-        <input name="title" placeholder="Title" value={form.title} onChange={handleChange} required />
-
-        <input name="author" placeholder="Author" value={form.author} onChange={handleChange} required />
-
-        <input name="price" type="number" placeholder="Price" value={form.price} onChange={handleChange} required />
-
-        <input name="category" placeholder="Category" value={form.category} onChange={handleChange} required />
-
-        <textarea name="description" placeholder="Description" value={form.description} onChange={handleChange} />
-
-        <button type="submit">
-          {editingId ? "Update Book" : "Add Book"}
-        </button>
-
-        {editingId && (
-          <button
-            type="button"
-            onClick={() => {
-              setEditingId(null);
-              setForm({
-                title: "",
-                author: "",
-                price: "",
-                category: "",
-                description: ""
-              });
-            }}
-          >
-            Cancel
-          </button>
-        )}
-      </form>
-
-      <hr />
-
-      <h2>Books</h2>
-
-      {books?.map((book) => (
-        <div key={book._id}>
-          <h3>{book.title}</h3>
-
-          <p>Author: {book.author}</p>
-          <p>Price: ₹{book.price}</p>
-          <p>Category: {book.category}</p>
-          <p>{book.description}</p>
-
-          <button onClick={() => handleEdit(book)}>Edit</button>
-
-          <button onClick={() => handleDelete(book._id)}>Delete</button>
-
-          <hr />
-        </div>
-      ))}
+      <BookList
+        books={books}
+        onEdit={handleEdit}
+        onDelete={handleDelete}
+      />
     </div>
   );
 }
