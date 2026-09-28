@@ -4,7 +4,7 @@ export const booksApi = createApi({
   reducerPath: "booksApi",
 
   baseQuery: fetchBaseQuery({
-    baseUrl: "http://localhost:5000/api"
+    baseUrl: "https://book-store-api-7anz.onrender.com/api"
   }),
 
   tagTypes: ["Books"],
