@@ -1,4 +1,4 @@
-import BookCard from "./bookCard";
+import bookCard from "./bookCard";
 
 function bookList({ books, onEdit, onDelete, isDeleting }) {
   return (
@@ -7,7 +7,7 @@ function bookList({ books, onEdit, onDelete, isDeleting }) {
 
     <div className="books-grid">
       {books?.map((book) => (
-        <bookCard
+        <BookCard
     key={book._id}
     book={book}
     onEdit={onEdit}
