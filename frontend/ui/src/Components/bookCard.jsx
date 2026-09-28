@@ -1,4 +1,4 @@
-function BookCard({ book, onEdit, onDelete, isDeleting }) {
+function bookCard({ book, onEdit, onDelete, isDeleting }) {
   return (
     <div className="book-card">
       <h3>{book.title}</h3>
