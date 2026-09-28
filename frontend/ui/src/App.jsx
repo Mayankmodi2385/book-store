@@ -8,7 +8,6 @@ import {
 
 function App() {
   const { data: books, isLoading } = useGetBooksQuery();
-
   const [createBook] = useCreateBookMutation();
   const [updateBook] = useUpdateBookMutation();
   const [deleteBook] = useDeleteBookMutation();
