@@ -1,4 +1,5 @@
 import { useState } from "react";
+
 import {
   useGetBooksQuery,
   useCreateBookMutation,
@@ -12,11 +13,15 @@ import BookList from "./Components/bookList";
 function App() {
   const { data: books, isLoading } = useGetBooksQuery();
 
-  const [createBook, { isLoading: isCreating }] = useCreateBookMutation();
+  const [createBook, { isLoading: isCreating }] =
+    useCreateBookMutation();
 
-const [updateBook, { isLoading: isUpdating }] = useUpdateBookMutation();
+  const [updateBook, { isLoading: isUpdating }] =
+    useUpdateBookMutation();
 
-const [deleteBook, { isLoading: isDeleting }] = useDeleteBookMutation();
+  const [deleteBook] = useDeleteBookMutation();
+
+  const [deletingId, setDeletingId] = useState(null);
 
   const [form, setForm] = useState({
     title: "",
@@ -76,7 +81,11 @@ const [deleteBook, { isLoading: isDeleting }] = useDeleteBookMutation();
   };
 
   const handleDelete = async (id) => {
+    setDeletingId(id);
+
     await deleteBook(id);
+
+    setDeletingId(null);
   };
 
   const handleCancel = () => {
@@ -105,12 +114,15 @@ const [deleteBook, { isLoading: isDeleting }] = useDeleteBookMutation();
         onChange={handleChange}
         onSubmit={handleSubmit}
         onCancel={handleCancel}
+        isCreating={isCreating}
+        isUpdating={isUpdating}
       />
 
       <BookList
         books={books}
         onEdit={handleEdit}
         onDelete={handleDelete}
+        deletingId={deletingId}
       />
     </div>
   );

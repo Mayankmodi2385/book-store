@@ -1,23 +1,28 @@
-import bookCard from "./bookCard";
+import BookCard from "./bookCard";
 
-function bookList({ books, onEdit, onDelete, isDeleting }) {
+function BookList({
+  books,
+  onEdit,
+  onDelete,
+  deletingId
+}) {
   return (
     <div className="book-list">
       <h2>Books</h2>
 
-    <div className="books-grid">
-      {books?.map((book) => (
-        <BookCard
-    key={book._id}
-    book={book}
-    onEdit={onEdit}
-    onDelete={onDelete}
-    isDeleting={isDeleting}
-/>
-      ))}
-    </div>
+      <div className="books-grid">
+        {books?.map((book) => (
+          <BookCard
+            key={book._id}
+            book={book}
+            onEdit={onEdit}
+            onDelete={onDelete}
+            deletingId={deletingId}
+          />
+        ))}
+      </div>
     </div>
   );
 }
 
-export default bookList;
+export default BookList;
