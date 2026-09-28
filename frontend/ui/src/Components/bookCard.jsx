@@ -1,4 +1,4 @@
-function bookCard({ book, onEdit, onDelete }) {
+function BookCard({ book, onEdit, onDelete, isDeleting }) {
   return (
     <div className="book-card">
       <h3>{book.title}</h3>
@@ -9,7 +9,12 @@ function bookCard({ book, onEdit, onDelete }) {
       <p>{book.description}</p>
 
       <button onClick={() => onEdit(book)}>Edit</button>
-      <button onClick={() => onDelete(book._id)}>Delete</button>
+      <button
+  onClick={() => onDelete(book._id)}
+  disabled={isDeleting}
+>
+  {isDeleting ? "Deleting..." : "Delete"}
+</button>
     </div>
   );
 }

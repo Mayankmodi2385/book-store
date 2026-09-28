@@ -12,9 +12,11 @@ import BookList from "./Components/bookList";
 function App() {
   const { data: books, isLoading } = useGetBooksQuery();
 
-  const [createBook] = useCreateBookMutation();
-  const [updateBook] = useUpdateBookMutation();
-  const [deleteBook] = useDeleteBookMutation();
+  const [createBook, { isLoading: isCreating }] = useCreateBookMutation();
+
+const [updateBook, { isLoading: isUpdating }] = useUpdateBookMutation();
+
+const [deleteBook, { isLoading: isDeleting }] = useDeleteBookMutation();
 
   const [form, setForm] = useState({
     title: "",

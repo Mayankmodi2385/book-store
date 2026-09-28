@@ -20,9 +20,15 @@ function bookForm({
 
         <textarea name="description" placeholder="Description" value={form.description} onChange={onChange} />
 
-        <button type="submit">
-          {editingId ? "Update Book" : "Add Book"}
-        </button>
+        <button type="submit" disabled={isCreating || isUpdating}>
+  {isCreating
+    ? "Adding..."
+    : isUpdating
+    ? "Updating..."
+    : editingId
+    ? "Update Book"
+    : "Add Book"}
+</button>
 
         {editingId && (
           <button type="button" onClick={onCancel}>
