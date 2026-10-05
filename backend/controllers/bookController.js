@@ -1,8 +1,7 @@
 const Book = require("../models/book");
 
+// Create Book
 const createBook = async (req, res) => {
-    // Function runs when someone sends POST request to API
-
     try {
         const {
             title,
@@ -17,22 +16,26 @@ const createBook = async (req, res) => {
             author,
             price,
             category,
-            description
+            description,
+            user: req.user.id
         });
 
         res.status(201).json(book);
 
     } catch (error) {
-
         res.status(500).json({
             message: error.message
         });
-
     }
 };
+
+
+// Get all books of logged-in user
 const getBooks = async (req, res) => {
     try {
-        const books = await Book.find();
+        const books = await Book.find({
+            user: req.user.id
+        });
 
         res.status(200).json(books);
 
@@ -42,9 +45,15 @@ const getBooks = async (req, res) => {
         });
     }
 };
+
+
+// Get one book of logged-in user
 const getBookById = async (req, res) => {
     try {
-        const book = await Book.findById(req.params.id);
+        const book = await Book.findOne({
+            _id: req.params.id,
+            user: req.user.id
+        });
 
         if (!book) {
             return res.status(404).json({
@@ -60,12 +69,20 @@ const getBookById = async (req, res) => {
         });
     }
 };
+
+
+// Update logged-in user's book
 const updateBook = async (req, res) => {
     try {
-        const book = await Book.findByIdAndUpdate(
-            req.params.id,
+        const book = await Book.findOneAndUpdate(
+            {
+                _id: req.params.id,
+                user: req.user.id
+            },
             req.body,
-            { new: true }
+            {
+                new: true
+            }
         );
 
         if (!book) {
@@ -82,9 +99,15 @@ const updateBook = async (req, res) => {
         });
     }
 };
+
+
+// Delete logged-in user's book
 const deleteBook = async (req, res) => {
     try {
-        const book = await Book.findByIdAndDelete(req.params.id);
+        const book = await Book.findOneAndDelete({
+            _id: req.params.id,
+            user: req.user.id
+        });
 
         if (!book) {
             return res.status(404).json({
@@ -103,6 +126,8 @@ const deleteBook = async (req, res) => {
         });
     }
 };
+
+
 module.exports = {
     createBook,
     getBooks,
