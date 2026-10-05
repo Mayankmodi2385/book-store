@@ -1,5 +1,6 @@
 import { useState } from "react";
-
+import Signup from "./Components/Signup";
+import Login from "./Components/Login";
 import {
   useGetBooksQuery,
   useCreateBookMutation,
@@ -107,7 +108,8 @@ function App() {
   return (
     <div className="app">
       <h1>Book Store</h1>
-
+      <Signup />
+      <Login />
       <BookForm
         form={form}
         editingId={editingId}
@@ -117,6 +119,7 @@ function App() {
         isCreating={isCreating}
         isUpdating={isUpdating}
       />
+      
 
       <BookList
         books={books}
