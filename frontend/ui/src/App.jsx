@@ -1,6 +1,5 @@
 import { useState } from "react";
-import Signup from "./Components/Signup";
-import Login from "./Components/Login";
+
 import {
   useGetBooksQuery,
   useCreateBookMutation,
@@ -10,19 +9,21 @@ import {
 
 import BookForm from "./Components/bookForm";
 import BookList from "./Components/bookList";
+import Signup from "./Components/Signup";
+import Login from "./Components/Login";
 
 function App() {
-  const { data: books, isLoading } = useGetBooksQuery();
 
-  const [createBook, { isLoading: isCreating }] =
-    useCreateBookMutation();
+  const token = localStorage.getItem("token");
+  const user = JSON.parse(localStorage.getItem("user"));
 
-  const [updateBook, { isLoading: isUpdating }] =
-    useUpdateBookMutation();
+  const { data: books, isLoading } = useGetBooksQuery(undefined, {
+    skip: !token
+  });
 
+  const [createBook] = useCreateBookMutation();
+  const [updateBook] = useUpdateBookMutation();
   const [deleteBook] = useDeleteBookMutation();
-
-  const [deletingId, setDeletingId] = useState(null);
 
   const [form, setForm] = useState({
     title: "",
@@ -56,6 +57,7 @@ function App() {
       });
 
       setEditingId(null);
+
     } else {
       await createBook(bookData);
     }
@@ -82,11 +84,7 @@ function App() {
   };
 
   const handleDelete = async (id) => {
-    setDeletingId(id);
-
     await deleteBook(id);
-
-    setDeletingId(null);
   };
 
   const handleCancel = () => {
@@ -101,32 +99,55 @@ function App() {
     });
   };
 
-  if (isLoading) {
-    return <h2>Loading books...</h2>;
-  }
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    localStorage.removeItem("user");
+
+    window.location.reload();
+  };
 
   return (
     <div className="app">
-      <h1>Book Store</h1>
-      <Signup />
-      <Login />
-      <BookForm
-        form={form}
-        editingId={editingId}
-        onChange={handleChange}
-        onSubmit={handleSubmit}
-        onCancel={handleCancel}
-        isCreating={isCreating}
-        isUpdating={isUpdating}
-      />
-      
 
-      <BookList
-        books={books}
-        onEdit={handleEdit}
-        onDelete={handleDelete}
-        deletingId={deletingId}
-      />
+      <h1>Book Store</h1>
+
+      {!token ? (
+        <>
+          <Signup />
+          <Login />
+        </>
+      ) : (
+        <>
+          <div>
+            <h3>
+              Welcome, {user?.name}
+            </h3>
+
+            <button onClick={handleLogout}>
+              Logout
+            </button>
+          </div>
+
+          <BookForm
+            form={form}
+            editingId={editingId}
+            onChange={handleChange}
+            onSubmit={handleSubmit}
+            onCancel={handleCancel}
+          />
+
+          {isLoading ? (
+            <h2>Loading books...</h2>
+          ) : (
+            <BookList
+              books={books}
+              onEdit={handleEdit}
+              onDelete={handleDelete}
+            />
+          )}
+        </>
+      )}
+
     </div>
   );
 }
