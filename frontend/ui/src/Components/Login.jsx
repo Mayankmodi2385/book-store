@@ -4,6 +4,8 @@ import { useLoginMutation } from "../services/authApi";
 function Login() {
   const [login, { isLoading }] = useLoginMutation();
 
+  const [showPassword, setShowPassword] = useState(false);
+
   const [form, setForm] = useState({
     email: "",
     password: ""
@@ -24,18 +26,16 @@ function Login() {
 
       console.log("Login successful:", response);
 
-      // Store JWT
       localStorage.setItem("token", response.token);
 
-      // Store user information
       localStorage.setItem(
         "user",
         JSON.stringify(response.user)
       );
 
       alert("Login successful!");
-      window.location.reload();
 
+      window.location.reload();
 
     } catch (error) {
       console.log("Login failed:", error);
@@ -47,7 +47,8 @@ function Login() {
   };
 
   return (
-    <div>
+    <div className="auth-form">
+
       <h2>Login</h2>
 
       <form onSubmit={handleSubmit}>
@@ -61,14 +62,27 @@ function Login() {
           required
         />
 
-        <input
-          type="password"
-          name="password"
-          placeholder="Password"
-          value={form.password}
-          onChange={handleChange}
-          required
-        />
+        {/* Password field */}
+        <div className="password-wrapper">
+
+          <input
+            type={showPassword ? "text" : "password"}
+            name="password"
+            placeholder="Password"
+            value={form.password}
+            onChange={handleChange}
+            required
+          />
+
+          <button
+            type="button"
+            className="password-toggle"
+            onClick={() => setShowPassword(!showPassword)}
+          >
+            {showPassword ? "🙈" : "👁️"}
+          </button>
+
+        </div>
 
         <button
           type="submit"
@@ -78,6 +92,7 @@ function Login() {
         </button>
 
       </form>
+
     </div>
   );
 }

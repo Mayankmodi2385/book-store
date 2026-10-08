@@ -17,6 +17,10 @@ function App() {
   const token = localStorage.getItem("token");
   const user = JSON.parse(localStorage.getItem("user"));
 
+  // Controls Login and Signup forms
+  const [showLogin, setShowLogin] = useState(false);
+  const [showSignup, setShowSignup] = useState(false);
+
   const { data: books, isLoading } = useGetBooksQuery(undefined, {
     skip: !token
   });
@@ -109,23 +113,74 @@ function App() {
   return (
     <div className="app">
 
+      {/* NAVBAR */}
+      <nav className="navbar">
+
+        <div className="logo">
+          📚 Book Store
+        </div>
+
+        {!token ? (
+          <div className="nav-buttons">
+
+            <button
+              className="login-btn"
+              onClick={() => {
+                setShowLogin(true);
+                setShowSignup(false);
+              }}
+            >
+              Login
+            </button>
+
+            <button
+              className="signup-btn"
+              onClick={() => {
+                setShowSignup(true);
+                setShowLogin(false);
+              }}
+            >
+              Sign Up
+            </button>
+
+          </div>
+        ) : (
+          <button
+            className="logout-btn"
+            onClick={handleLogout}
+          >
+            Logout
+          </button>
+        )}
+
+      </nav>
+
       <h1>Book Store</h1>
 
+      {/* NOT LOGGED IN */}
       {!token ? (
+
         <>
-          <Signup />
-          <Login />
+
+          {showSignup && (
+            <Signup />
+          )}
+
+          {showLogin && (
+            <Login />
+          )}
+
         </>
+
       ) : (
+
+        /* LOGGED IN */
         <>
+
           <div>
             <h3>
               Welcome, {user?.name}
             </h3>
-
-            <button onClick={handleLogout}>
-              Logout
-            </button>
           </div>
 
           <BookForm
@@ -145,7 +200,9 @@ function App() {
               onDelete={handleDelete}
             />
           )}
+
         </>
+
       )}
 
     </div>
