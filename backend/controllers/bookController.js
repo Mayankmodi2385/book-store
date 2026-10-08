@@ -1,6 +1,6 @@
 const Book = require("../models/book");
 
-// Create Book
+// CREATE BOOK
 const createBook = async (req, res) => {
     try {
         const {
@@ -30,9 +30,10 @@ const createBook = async (req, res) => {
 };
 
 
-// Get all books of logged-in user
+// GET ALL BOOKS OF LOGGED-IN USER
 const getBooks = async (req, res) => {
     try {
+
         const books = await Book.find({
             user: req.user.id
         });
@@ -47,9 +48,10 @@ const getBooks = async (req, res) => {
 };
 
 
-// Get one book of logged-in user
+// GET ONE BOOK
 const getBookById = async (req, res) => {
     try {
+
         const book = await Book.findOne({
             _id: req.params.id,
             user: req.user.id
@@ -71,18 +73,17 @@ const getBookById = async (req, res) => {
 };
 
 
-// Update logged-in user's book
+// UPDATE BOOK
 const updateBook = async (req, res) => {
     try {
+
         const book = await Book.findOneAndUpdate(
             {
                 _id: req.params.id,
                 user: req.user.id
             },
             req.body,
-            {
-                new: true
-            }
+            { new: true }
         );
 
         if (!book) {
@@ -101,9 +102,10 @@ const updateBook = async (req, res) => {
 };
 
 
-// Delete logged-in user's book
+// DELETE BOOK
 const deleteBook = async (req, res) => {
     try {
+
         const book = await Book.findOneAndDelete({
             _id: req.params.id,
             user: req.user.id
