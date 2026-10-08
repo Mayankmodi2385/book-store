@@ -10,72 +10,94 @@ function BookForm({
   const isSubmitting = isCreating || isUpdating;
 
   return (
-    <div className="book-form">
-      <h2>{editingId ? "Edit Book" : "Add Book"}</h2>
+    <section className="panel book-form">
+      <h2 className="panel-title">{editingId ? "Edit book" : "Add a book"}</h2>
 
-      <form onSubmit={onSubmit}>
-        <input
-          name="title"
-          placeholder="Title"
-          value={form.title}
-          onChange={onChange}
-          required
-        />
+      <form onSubmit={onSubmit} className="book-form-grid">
+        <label className="field">
+          <span className="field-label">Title</span>
+          <input
+            name="title"
+            placeholder="Book title"
+            value={form.title}
+            onChange={onChange}
+            required
+          />
+        </label>
 
-        <input
-          name="author"
-          placeholder="Author"
-          value={form.author}
-          onChange={onChange}
-          required
-        />
+        <label className="field">
+          <span className="field-label">Author</span>
+          <input
+            name="author"
+            placeholder="Author name"
+            value={form.author}
+            onChange={onChange}
+            required
+          />
+        </label>
 
-        <input
-          name="price"
-          type="number"
-          placeholder="Price"
-          value={form.price}
-          onChange={onChange}
-          required
-        />
+        <label className="field">
+          <span className="field-label">Price (₹)</span>
+          <input
+            name="price"
+            type="number"
+            inputMode="decimal"
+            min="0"
+            placeholder="499"
+            value={form.price}
+            onChange={onChange}
+            required
+          />
+        </label>
 
-        <input
-          name="category"
-          placeholder="Category"
-          value={form.category}
-          onChange={onChange}
-          required
-        />
+        <label className="field">
+          <span className="field-label">Category</span>
+          <input
+            name="category"
+            placeholder="Fiction, Science, Comics..."
+            value={form.category}
+            onChange={onChange}
+            required
+          />
+        </label>
 
-        <textarea
-          name="description"
-          placeholder="Description"
-          value={form.description}
-          onChange={onChange}
-        />
+        <label className="field field-wide">
+          <span className="field-label">Description</span>
+          <textarea
+            name="description"
+            placeholder="A short note about the book (optional)"
+            value={form.description}
+            onChange={onChange}
+          />
+        </label>
 
-        <button type="submit" disabled={isSubmitting}>
-          {isSubmitting ? (
-            <>
-              <span className="loader"></span>
-              {editingId ? "Updating..." : "Adding..."}
-            </>
-          ) : (
-            editingId ? "Update Book" : "Add Book"
-          )}
-        </button>
-
-        {editingId && (
-          <button
-            type="button"
-            onClick={onCancel}
-            disabled={isUpdating}
-          >
-            Cancel
+        <div className="form-actions field-wide">
+          <button type="submit" className="btn btn-primary" disabled={isSubmitting}>
+            {isSubmitting ? (
+              <>
+                <span className="loader" />
+                {editingId ? "Saving..." : "Adding..."}
+              </>
+            ) : editingId ? (
+              "Save changes"
+            ) : (
+              "Add book"
+            )}
           </button>
-        )}
+
+          {editingId && (
+            <button
+              type="button"
+              className="btn btn-ghost"
+              onClick={onCancel}
+              disabled={isUpdating}
+            >
+              Cancel
+            </button>
+          )}
+        </div>
       </form>
-    </div>
+    </section>
   );
 }
 

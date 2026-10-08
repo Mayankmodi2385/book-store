@@ -1,20 +1,26 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
+// Backend URL. On Vercel you can override it with an Environment Variable
+// named VITE_API_URL. By default it uses your live Render backend.
+const API_URL =
+  import.meta.env.VITE_API_URL ||
+  "https://book-store-api-7anz.onrender.com/api";
+
 export const booksApi = createApi({
   reducerPath: "booksApi",
 
   baseQuery: fetchBaseQuery({
-    baseUrl: "https://book-store-api-7anz.onrender.com/api",
-    
-     prepareHeaders: (headers) => {
-    const token = localStorage.getItem("token");
+    baseUrl: API_URL,
 
-    if (token) {
-      headers.set("Authorization", `Bearer ${token}`);
+    prepareHeaders: (headers) => {
+      const token = localStorage.getItem("token");
+
+      if (token) {
+        headers.set("Authorization", `Bearer ${token}`);
+      }
+
+      return headers;
     }
-
-    return headers;
-  }
   }),
 
   tagTypes: ["Books"],
