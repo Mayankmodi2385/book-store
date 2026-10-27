@@ -297,7 +297,7 @@ p {
 .shelf {
   width: 100%;
 }
-
+    
 .spines {
   display: flex;
   align-items: flex-end;
@@ -639,4 +639,4 @@ p {
   .loader {
     animation-duration: 2s;
   }
-}
+} 
