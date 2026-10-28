@@ -9,9 +9,22 @@ const authRoutes = require("./routes/authRoutes");
 
 const app = express();
 
-app.use(cors());
+const allowedOrigins = [
+    "http://localhost:5173",
+    process.env.FRONTEND_URL
+].filter(Boolean);
 
-app.use(express.json());
+app.use(cors({
+    origin: allowedOrigins,
+    methods: ["GET", "POST", "PUT", "DELETE"],
+    allowedHeaders: [
+        "Content-Type",
+        "Authorization",
+        "x-enc-key"
+    ]
+}));
+
+app.use(express.json({ limit: "8mb" }));
 
 /* ==========================================================
    ENCRYPTED COMMUNICATION (RSA + AES-256-GCM)
