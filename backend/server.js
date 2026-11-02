@@ -8,6 +8,8 @@ const bookRoutes = require("./routes/bookRoutes");
 const authRoutes = require("./routes/authRoutes");
 
 const app = express();
+// Trust the Render reverse proxy
+app.set("trust proxy", 1);
 
 const allowedOrigins = [
     "http://localhost:5173",
